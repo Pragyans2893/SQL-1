@@ -2,15 +2,17 @@
 on: [push]
 
 jobs:
-  build:
+build:
     runs-on: windows-latest
     steps:
     - uses: actions/checkout@v1
-    - uses: azure/actions/login@v1
-      with:
+    - uses: azure/login@v1
+    with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
-    - uses: Azure/sql-action@v1
-      with:
-        server-name: sqldemi12.database.windows.net
-        connection-string: ${{ secrets.AZURE_SQL_CONNECTION_STRING }}
-        dacpac-package: './Database.dacpac'
+
+- uses: azure/sql-action@v2
+  with:
+    connection-string: ${{ secrets.AZURE_SQL_CONNECTION_STRING }}
+    path: './Database.dacpac'
+    action: 'Publish'
+    
